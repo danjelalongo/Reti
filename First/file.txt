@@ -1,0 +1,10 @@
+Daniela;Longo;21
+Giovanni;Rossi;30
+Maria;Bianchi;25
+Luca;Verdi;40
+Paola;Ferrari;35
+Marco;Russo;28
+Laura;Martini;33
+Alessandro;Galli;22
+Giulia;Conti;27
+Simone;Romano;29
