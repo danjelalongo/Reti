@@ -23,11 +23,8 @@ void handle_error(char* msg){
     exit(EXIT_FAILURE);
 }
 
-char* processing(char* buffer) {
-    // Allocazione di una stringa per memorizzare la lunghezza come stringa
-    char* result = malloc(BUFSIZ * sizeof(char)); 
-    sprintf(result, "%lu", strlen(buffer));
-    return result;
+char* processing(char* buffer, char* outcome) {
+    sprintf(outcome, "%lu", strlen(buffer));
 }
 
 int main(int argc, char* argv[]){
@@ -35,7 +32,7 @@ int main(int argc, char* argv[]){
     if(argc != 2) handle_error("argc"); // [./server] [5533]
     int PORT = atoi(argv[1]);
 
-    int sockfd; // descrittore di socket
+    int sockfd, n; // descrittore di socket
     struct sockaddr_in addr; // struttura che modella l'indirizzo IP; il tipo è struct sokaddr_in
     socklen_t len = sizeof(addr); // socklen_t è un intero positivo
     char buffer[BUFSIZ], outcome[BUFSIZ];
@@ -53,14 +50,18 @@ int main(int argc, char* argv[]){
     puts("[+]Server listening...");
 
     while(1){
-        if((recvfrom(sockfd, buffer, BUFSIZ, 0, (struct sockaddr*)&addr, &len)) < 0) handle_error("recvfrom");
+        if((n = recvfrom(sockfd, buffer, BUFSIZ, 0, (struct sockaddr*)&addr, &len)) < 0) handle_error("recvfrom");
+        buffer[n] = 0;
+
+        if(!(strcmp(buffer, "exit"))) break; // se il client invia "exit" la comunicazione si interrompe
         
-        printf("\nClient: %s\n", buffer);
-        strcpy(outcome, processing(buffer));
-        printf("Lunghezza di %s : %s\n", buffer, outcome);
+        printf("Client: %s\n", buffer);
+        processing(buffer, outcome);
+        printf("Lenght of %s : %s\n\n", buffer, outcome);
 
         if((sendto(sockfd, outcome, strlen(outcome), 0, (struct sockaddr*)&addr, len)) < 0) handle_error("sendto");
     }
 
+    puts("[+]Communication interrupted");
     close(sockfd);
 }

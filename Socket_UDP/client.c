@@ -47,9 +47,14 @@ int main(int argc, char* argv[]){
         buffer[strlen(buffer)-1] = 0; // tolgo il carattere '\n' dal buffer
 
         if((sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr*)&addr, len)) < 0) handle_error("sendto");
-        if((n = recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&addr, &len)) < 0) handle_error("recvfrom");
+        if(!(strcmp(buffer, "exit"))) break; // se il client invia "exit" la comunicazione si interrompe
+        
+        if((n = recvfrom(sockfd, buffer, BUFSIZ, 0, (struct sockaddr*)&addr, &len)) < 0) handle_error("recvfrom");
+        buffer[n] = 0;
+
         printf("\nServer: %s\n\n", buffer);
     }
-
+    
+    puts("[+]Communication interrupted");
     close(sockfd);
 }
