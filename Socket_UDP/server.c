@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h> // sendto, recvfrom, socket ecc...
 #include <arpa/inet.h> // struct sockaddr_in
 #include <unistd.h> // close
 
@@ -23,7 +22,7 @@ void handle_error(char* msg){
     exit(EXIT_FAILURE);
 }
 
-char* processing(char* buffer, char* outcome) {
+void processing(char* buffer, char* outcome){
     sprintf(outcome, "%lu", strlen(buffer));
 }
 
@@ -47,9 +46,11 @@ int main(int argc, char* argv[]){
     addr.sin_port = htons(PORT); // host-to-network-short (passa al formato di rete) : setto la porta
 
     if((bind(sockfd, (struct sockaddr*)&addr, len)) < 0) handle_error("bind");
-    puts("[+]Server listening...");
+    puts("[+]Server listening...\n");
 
     while(1){
+
+        // Conservo in 'n' il numero di bytes ricevuti
         if((n = recvfrom(sockfd, buffer, BUFSIZ, 0, (struct sockaddr*)&addr, &len)) < 0) handle_error("recvfrom");
         buffer[n] = 0;
 

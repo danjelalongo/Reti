@@ -28,10 +28,10 @@ int main(int argc, char* argv[]){
     
     if(argc > 1) {
         printf("argc: %d\n", argc);
-        printf("argv: [ "); // se c'è solo testo allora posso stampare con puts
+        printf("argv: [ "); 
         for(int i=0; i<argc; i++)
             printf("[%s] ", argv[i]);
-        puts("] \n");
+        puts("] \n");// se c'è solo testo allora posso stampare con puts
     }
 
     FILE* fd; 

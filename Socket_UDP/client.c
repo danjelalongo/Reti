@@ -16,9 +16,9 @@
 #include <arpa/inet.h> // struct sockaddr_in
 #include <unistd.h> // close
 
-void handle_error(char* msg){
-    fprintf(stderr, "Error: %s\n", msg);
-    exit(EXIT_FAILURE);
+void handle_error(char* msg){ //prende in input il puntatore al messaggio
+    fprintf(stderr, "Error: %s\n", msg); // fprintf è come printf(), ma anziché scrivere sullo standard output (generalmente lo schermo), scrive su un file specificato.
+    exit(EXIT_FAILURE); //il programma termina restituendo exit failure
 }
 
 int main(int argc, char* argv[]){
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 
     // AF_INET -> IPV4
     // SOCK_DGRAM -> UDP
-    if((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) handle_error("socket");
+    if((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) handle_error("socket"); // se restituisce -1 ha fallito
 
     memset(&addr, 0, len); // pongo a '0' i primi 'len' bytes di 'addr'
     addr.sin_family = AF_INET;
@@ -49,9 +49,9 @@ int main(int argc, char* argv[]){
         if((sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr*)&addr, len)) < 0) handle_error("sendto");
         if(!(strcmp(buffer, "exit"))) break; // se il client invia "exit" la comunicazione si interrompe
         
+        // Conservo in 'n' il numero di bytes ricevuti
         if((n = recvfrom(sockfd, buffer, BUFSIZ, 0, (struct sockaddr*)&addr, &len)) < 0) handle_error("recvfrom");
         buffer[n] = 0;
-
         printf("\nServer: %s\n\n", buffer);
     }
     
