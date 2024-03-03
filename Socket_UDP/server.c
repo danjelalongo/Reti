@@ -42,7 +42,7 @@ int main(int argc, char* argv[]){
 
     memset(&addr, 0, len); // pongo a '0' i primi 'len' bytes di 'addr'
     addr.sin_family = AF_INET;
-    inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr); //presentation-to-network (passa al formato di rete) :setto l'indirizzo
+    // inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr); //presentation-to-network (passa al formato di rete) :setto l'indirizzo
     addr.sin_port = htons(PORT); // host-to-network-short (passa al formato di rete) : setto la porta
 
     if((bind(sockfd, (struct sockaddr*)&addr, len)) < 0) handle_error("bind");
