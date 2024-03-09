@@ -24,9 +24,9 @@ void handle_error(char* msg){ //prende in input il puntatore al messaggio
 int main(int argc, char* argv[]){
 
     if(argc != 3) handle_error("argc"); // [./client] [127.0.0.1] [5533]
-    char* IP = argv[1];
     int PORT = atoi(argv[2]);
-
+    char* IP = argv[1];
+    
     int sockfd, n; // descrittore di socket
     struct sockaddr_in addr; // struttura che modella l'indirizzo IP; il tipo è struct sokaddr_in
     socklen_t len = sizeof(addr); // socklen_t è un intero positivo
