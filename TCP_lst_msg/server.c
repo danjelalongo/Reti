@@ -20,14 +20,34 @@ void handle_error(char*message){
     exit(EXIT_FAILURE);
 }
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]) {
 
-    int sockfd, n;
+    int sockfd, newsock, n;
     struct sockaddr_in addr;
     socklen_t len = sizeof(addr);
     char buffer[BUFSIZ];
 
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
+    memset(&addr, 0, len);
+    addr.sin_family = AF_INET;
+    inet_pton(AF_INET, "0.0.0.0", &addr.sin_addr);
+    addr.sin_port = htons(atoi(argv[1]));
 
+    bind(sockfd, (struct sockaddr*)&addr, len);
+    listen(sockfd, 5);
 
+    printf("[+]Server listening...\n\n");
+
+    newsock = accept(sockfd, (struct sockaddr*)&addr, &len);
+    close(sockfd);
+
+    n = recv(newsock, buffer, BUFSIZ, 0);
+    buffer[n] = 0;
+    printf("Client: %s\n", buffer);
+
+    strcpy(buffer, "Okay");
+    send(newsock, buffer, strlen(buffer), 0);
+    
+    close(newsock);
 }
