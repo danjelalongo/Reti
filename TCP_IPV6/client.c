@@ -12,18 +12,18 @@ void handle_error(char *message){
 int main(int argc, char* argv[]){
 
     int sockfd, newsock, n;
-    struct sockaddr_in addr;
-    socklen_t len =sizeof(addr);
+    struct sockaddr_in6 addr;
+    socklen_t len = sizeof(addr);
     char buffer[BUFSIZ];
 
     if(argc < 3) handle_error("argc");
 
-    if((sockfd = socket(AF_INET, SOCK_STREAM, 0))<0) handle_error("socket");//SOCK_STREAM perchè usiamo TCP
+    if((sockfd = socket(AF_INET6, SOCK_STREAM, 0))<0) handle_error("socket"); // SOCK_STREAM perchè usiamo TCP
 
     memset(&addr, 0, len);
-    addr.sin_family= AF_INET;
-    inet_pton(AF_INET, argv[1], &addr.sin_addr);
-    addr.sin_port= htons(atoi(argv[2]));
+    addr.sin6_family= AF_INET6;
+    inet_pton(AF_INET6, argv[1], &addr.sin6_addr); // argv[1] deve essere un IPv6
+    addr.sin6_port = htons(atoi(argv[2]));
 
     if((connect(sockfd, (struct sockaddr*)&addr, len)) < 0) handle_error("connect");
     printf("Connected to server\n\n");
@@ -43,5 +43,4 @@ int main(int argc, char* argv[]){
     }
 
     close(sockfd);
-
 }
