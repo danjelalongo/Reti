@@ -10,13 +10,16 @@ void handle_error(char *message){
 }
 
 int main(int argc, char* argv[]){
+    if (argc !=3) handle_error("argc");
+    char* IP= argv[1];
+    int PORT = atoi(argv[2]);
+
 
     int sockfd, n; 
     struct sockaddr_in addr;
     socklen_t len = sizeof(struct sockaddr_in);
     char buffer[BUFSIZ], client_ip[INET_ADDRSTRLEN];
 
-    if (argc < 3) handle_error("argc");
 
     memset(&addr, 0, len);
     addr.sin_family = AF_INET;

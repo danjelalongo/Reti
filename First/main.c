@@ -1,4 +1,4 @@
-#include <stdlib.h> // 
+#include <stdlib.h> // per allocare memoria dinamica
 /* malloc, free per allocare e deallocare memoria dinamica
 atoi, atol, atof per convertire le stringhe in interi o float
 rand, srand per generare numeri pseudocasuali
@@ -34,10 +34,10 @@ int main(int argc, char* argv[]){
         puts("] \n");// se c'è solo testo allora posso stampare con puts
     }
 
-    FILE* fd; 
+    FILE* fd; //puntatore a file di nome fd (file pointer)
 
     // mi assicuro che non ci siano errori nell'apertura del file
-    if(!(fd = fopen("file.txt", "r"))) { //apre il file, r significa modalità read, w wright, a entrambi
+    if(!(fd = fopen("file.txt", "r"))) { //apre il file, r significa modalità read, w wright, a entrambi, a+ se non esiste lo crea
         fprintf(stderr, "Errore nell'apertura del file");
         exit(EXIT_FAILURE);
     } 

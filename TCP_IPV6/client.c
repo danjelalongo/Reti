@@ -10,13 +10,15 @@ void handle_error(char *message){
 }
 
 int main(int argc, char* argv[]){
+    if(argc != 3) handle_error("argc");
+    char* IP =argv[1];
+    int PORT = argv[2];
 
     int sockfd, newsock, n;
     struct sockaddr_in6 addr;
     socklen_t len = sizeof(addr);
     char buffer[BUFSIZ];
 
-    if(argc < 3) handle_error("argc");
 
     if((sockfd = socket(AF_INET6, SOCK_STREAM, 0))<0) handle_error("socket"); // SOCK_STREAM perchè usiamo TCP
 

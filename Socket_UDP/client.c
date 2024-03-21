@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h> // sendto, recvfrom, socket ecc...
+//#include <sys/socket.h> // sendto, recvfrom, socket ecc...
 #include <arpa/inet.h> // struct sockaddr_in
 #include <unistd.h> // close
 
@@ -22,9 +22,9 @@ void handle_error(char* msg){ //prende in input il puntatore al messaggio
 }
 
 int main(int argc, char* argv[]){
-
+                                          // [0]        [1]         [2]
     if(argc != 3) handle_error("argc"); // [./client] [127.0.0.1] [5533]
-    int PORT = atoi(argv[2]);
+    int PORT = atoi(argv[2]); //stringa to integer
     char* IP = argv[1];
     
     int sockfd, n; // descrittore di socket
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
         buffer[strlen(buffer)-1] = 0; // tolgo il carattere '\n' dal buffer
 
         if((sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr*)&addr, len)) < 0) handle_error("sendto");
-        if(!(strcmp(buffer, "exit"))) break; // se il client invia "exit" la comunicazione si interrompe
+        if((strcmp(buffer, "exit"))==NULL) break; // se il client invia "exit" la comunicazione si interrompe
         
         // Conservo in 'n' il numero di bytes ricevuti
         if((n = recvfrom(sockfd, buffer, BUFSIZ, 0, (struct sockaddr*)&addr, &len)) < 0) handle_error("recvfrom");
